@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -22,6 +22,7 @@ const HomeWrapper = styled.div`
   background: grey;
   box-shadow: 1px 1px 8px black;
 `;
+
 const PostBoxes = styled.div`
   background: greenyellow;
   /* padding: 2rem 2rem; */
@@ -41,21 +42,20 @@ const PostBoxes = styled.div`
   }
 `;
 
-const Home = () => {
-  const [SQLdata, setSQLdata] = useState([]);
-  const [SQLid, setSQLId] = useState(0);
+export default function SinglePost() {
+  const [SQLdata, setSQLData] = useState([]);
+  let { postId } = useParams();
   let history = useHistory();
+  //   console.log(postId);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/get").then((data) => {
-      // console.log(data);
-      setSQLdata(data.data);
+    axios.get(`http://localhost:8000/api/get/${postId}`).then((data) => {
+      console.log(data);
+      setSQLData(data.data);
     });
   }, []);
 
-  // let moreDetailHandler = () => {
-  //   history.push(`/post/${items.id}`);
-  // };
+  //   console.log(SQLdata);
 
   return (
     <Container>
@@ -63,25 +63,18 @@ const Home = () => {
         {SQLdata.map((items, index) => (
           <PostBoxes>
             <h1>{items.title}</h1>
-            {/* <p>{items.id}</p> */}
             <p>{items.user_name}</p>
-            <p>
-              {items.post_text.length > 500
-                ? items.post_text.substring(0, 200) + "..."
-                : items.post_text}
-            </p>
+            <p>{items.post_text}</p>
             <button
               onClick={() => {
-                history.push(`/post/${items.id}`);
+                history.push(`/`);
               }}
             >
-              Click for more
+              Back
             </button>
           </PostBoxes>
         ))}
       </HomeWrapper>
     </Container>
   );
-};
-
-export default Home;
+}

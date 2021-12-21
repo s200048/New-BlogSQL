@@ -58,9 +58,21 @@ const CreatePost = () => {
       console.log(err);
     }
   };
+  // console.log(123);
+  // let getHandler = async () => {
+  //   try {
+  //     const data = await Axios.get("http://localhost:8000/api/get");
+  //     console.log(data);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+
+  //   // setSQLdata(data);
+  // };
+  // getHandler();
 
   // console.log(user);
-  console.log(text);
+  // console.log(text);
 
   return (
     <Container>

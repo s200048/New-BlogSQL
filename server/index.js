@@ -9,23 +9,47 @@ app.use(cors());
 
 //Home
 
-app.get("/", (req, res) => {
-  res.json({ msg: "This is CORS-enabled for all origins!" });
+// Get data
+app.get("/api/get", (req, res) => {
+  // res.json({ msg: "This is CORS-enabled for all origins!" });
+  db.query("SELECT * FROM posts", (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    res.status(200).send(result);
+  });
+});
+
+app.get("/api/get/:id", (req, res) => {
+  console.log(req.params);
+  let { id } = req.params;
+  console.log(id);
+  db.query("SELECT * FROM posts WHERE id = (?)", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    res.status(200).send(result);
+  });
 });
 
 //Post
 
 app.post("/api/create", (req, res) => {
-  console.log(req.body);
-  // db.query(
-  //   "INSERT INTO posts (title, post_text, user_name) VALUES (user, title, text)",
-  //   (err, result) => {
-  //     if (err) {
-  //       console.log(err);
-  //     }
-  //     console.log(result);
-  //   }
-  // );
+  // console.log(req.body);
+  const user = req.body.user;
+  const title = req.body.title;
+  const post = req.body.post;
+  // console.log(user + title + post);
+  db.query(
+    "INSERT INTO posts (user_name, title, post_text) VALUES (?, ?, ?)",
+    [user, title, post],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log(result);
+    }
+  );
 });
 
 // Port

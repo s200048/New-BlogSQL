@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import Nav from "./components/Nav";
 import Home from "./components/Home";
 import CreatePost from "./components/CreatePost";
+import SinglePost from "./components/SinglePost";
 
 const GlobalStyle = createGlobalStyle`
     *{
@@ -24,6 +25,9 @@ const App = () => {
         </Route>
         <Route path="/createpost" exact>
           <CreatePost />
+        </Route>
+        <Route path="/post/:postId" exact>
+          <SinglePost />
         </Route>
       </Switch>
     </>

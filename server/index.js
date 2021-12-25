@@ -52,6 +52,25 @@ app.post("/api/create", (req, res) => {
   );
 });
 
+//likes post
+
+app.post("/api/like/:id", (req, res) => {
+  // console.log(req.params);
+  let { id } = req.params;
+  // console.log(id);
+
+  db.query(
+    "UPDATE posts SET likes = likes + 1 WHERE id = ?",
+    id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      res.send(result);
+    }
+  );
+});
+
 // Port
 
 const PORT = 8000;

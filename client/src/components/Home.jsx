@@ -13,9 +13,9 @@ const HomeWrapper = styled.div`
   /* margin: 0 8rem;
   padding: 2rem 3rem; */
   height: 100vh;
-  width: 50%;
-  max-width: 50%;
-  padding: 30px;
+  /* width: 50%; */
+  max-width: 70%;
+  padding: 0px 2rem;
   display: flex;
   /* justify-content: center; */
   flex-direction: column;
@@ -24,7 +24,7 @@ const HomeWrapper = styled.div`
 `;
 const PostBoxes = styled.div`
   background: greenyellow;
-  /* padding: 2rem 2rem; */
+  padding: 2rem 2rem;
   width: 100%;
   margin-top: 20px;
   max-height: 400px;
@@ -34,7 +34,7 @@ const PostBoxes = styled.div`
   flex-direction: column;
   align-items: center;
   line-height: 3rem;
-  overflow: hidden;
+  /* overflow: hidden; */
 
   p {
     font-size: 1.5rem;
@@ -42,20 +42,51 @@ const PostBoxes = styled.div`
 `;
 
 const Home = () => {
-  const [SQLdata, setSQLdata] = useState([]);
-  const [SQLid, setSQLId] = useState(0);
+  let [SQLdata, setSQLdata] = useState([]);
+  let [like, setLike] = useState(0);
+  let [count, setCount] = useState(0);
   let history = useHistory();
 
   useEffect(() => {
     axios.get("http://localhost:8000/api/get").then((data) => {
       // console.log(data);
       setSQLdata(data.data);
+      // setLike(data.data.likes);
     });
   }, []);
 
-  // let moreDetailHandler = () => {
-  //   history.push(`/post/${items.id}`);
+  let likeHandler = (id) => {
+    axios.post(`http://localhost:8000/api/like/${id}`).then((data) => {
+      alert(`You have been liked the post ${id}`);
+      // console.log(data);
+      // setLike((prevLike) => prevLike + 1);
+      axios.get("http://localhost:8000/api/get").then((data) => {
+        setSQLdata(data.data);
+      });
+    });
+    // for (let i = 0; i < SQLdata.length; i++) {
+    //   if (SQLdata[i].id === id) {
+    //     setLike(SQLdata[i].likes);
+    //   }
+    // }
+  };
+
+  // useEffect(() => {
+  //   // console.log(like);
+  //   // hello();
+  //   likeHandler();
+  // }, [like]);
+
+  // let hello = () => {
+  //   console.log("hello");
   // };
+
+  console.log(SQLdata);
+  console.log(like);
+
+  let clickHandler = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
 
   return (
     <Container>
@@ -70,6 +101,14 @@ const Home = () => {
                 ? items.post_text.substring(0, 200) + "..."
                 : items.post_text}
             </p>
+            <p>{items.likes}</p>
+            <button
+              onClick={() => {
+                likeHandler(items.id);
+              }}
+            >
+              Likes
+            </button>
             <button
               onClick={() => {
                 history.push(`/post/${items.id}`);
@@ -80,6 +119,9 @@ const Home = () => {
           </PostBoxes>
         ))}
       </HomeWrapper>
+      {like}
+      {count}
+      <button onClick={clickHandler}>Click</button>
     </Container>
   );
 };

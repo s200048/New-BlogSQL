@@ -35,7 +35,7 @@ const PostBoxes = styled.div`
   flex-direction: column;
   align-items: center;
   line-height: 3rem;
-  overflow: hidden;
+  overflow: scroll;
 
   p {
     font-size: 1.5rem;
@@ -46,7 +46,7 @@ export default function SinglePost() {
   const [SQLdata, setSQLData] = useState([]);
   let { postId } = useParams();
   let history = useHistory();
-  //   console.log(postId);
+  console.log(postId);
 
   useEffect(() => {
     axios.get(`http://localhost:8000/api/get/${postId}`).then((data) => {
